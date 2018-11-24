@@ -1,0 +1,215 @@
+\section{5.4 Observability}
+\subsection{A, Creation of a state space model}
+\label{seq:54a}
+We want to find the system on the form $$\mathbf{\Dot{x}} = \mathbf{Ax} + \mathbf{B}u + \mathbf{Ew},  y = \mathbf{Cx} + v$$
+The equations for the complete system are given in \cite{assignment} and are given by
+\begin{subequations}
+\begin{align}
+    \dot{\xi} &= \psi_\omega\\
+    \dot{\psi}_\omega &= -\omega^2_0 \xi_\omega - 2 \lambda \omega_0 \psi_\omega + K_\omega \omega_\omega\\
+    \dot{\psi} &= r\\ 
+    \dot{r} &= -\frac{1}{T} r + \frac{K}{T} (\delta-b)\\ 
+    \dot{b} &= \omega_b\\
+    y &= \psi + \psi_\omega + v.
+\end{align}
+\end{subequations}
+
+Using the full model for the system we get the following
+\begin{align}
+\label{eq:54aModel}
+    \begin{bmatrix}
+        \Dot{\xi}\\
+        \Dot{\psi_w}\\
+        \Dot{\psi}\\
+        \Dot{r}\\
+        \Dot{b}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        0 & 1 & 0 & 0 & 0\\
+        -\omega_0^2 & -2\lambda\omega_0 & 0 & 0 & 0\\
+        0 & 0 & 0 & 1 & 0\\
+        0 & 0 & 0 & -\frac{1}{T} & -\frac{K}{T}\\
+        0 & 0 & 0 & 0 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        \xi_w\\
+        \psi_w\\
+        \psi\\
+        r\\
+        b
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+        0\\
+        0\\
+        0\\
+        \frac{K}{T}\\
+        0
+    \end{bmatrix}
+    \delta
+    +
+    \begin{bmatrix}
+        0 & 0\\
+        K_w & 0\\
+        0 & 0\\
+        0 & 0\\
+        0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        w_w\\
+        w_b
+    \end{bmatrix}
+\end{align}
+and 
+\begin{align}
+    y = 
+    \begin{bmatrix}
+        0 & 1 & 1 & 0 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        \xi_w\\
+        \psi_w\\
+        \psi\\
+        r\\
+        b
+    \end{bmatrix}
+    + v
+\end{align}
+Thus we can identify the matrices $\mathbf{A,B,C}$ and $\mathbf{E}$
+\begin{align}\label{eq:Full_A}
+    \mathbf{A} = 
+    \begin{bmatrix}
+        0 & 1 & 0 & 0 & 0\\
+        -\omega_0^2 & -2\lambda\omega_0 & 0 & 0 & 0\\
+        0 & 0 & 0 & 1 & 0\\
+        0 & 0 & 0 & -\frac{1}{T} & -\frac{K}{T}\\
+        0 & 0 & 0 & 0 & 0
+    \end{bmatrix}
+\end{align}
+\begin{align}
+    \mathbf{B} =
+    \begin{bmatrix}
+        0\\
+        0\\
+        0\\
+        \frac{K}{T}\\
+        0
+    \end{bmatrix}
+\end{align}
+\begin{align}\label{eq:Full_C}
+    \mathbf{C} = 
+    \begin{bmatrix}
+        0 & 1 & 1 & 0 & 0
+    \end{bmatrix}
+\end{align}
+\begin{align}
+    \mathbf{E} = 
+    \begin{bmatrix}
+        0 & 0\\
+        K_w & 0\\
+        0 & 0\\
+        0 & 0\\
+        0 & 1
+    \end{bmatrix}
+\end{align}
+\subsection{B, Observability without disturbances}
+A system is observable if and only if the observability matrix 
+\begin{equation}
+    \mathcal{O} = 
+	\begin{bmatrix}
+        \mathbf{C}\\
+        \mathbf{CA}\\
+        \vdots\\
+        \mathbf{CA^{n-1}}
+    \end{bmatrix}
+    \label{eq:observability_matrix}
+\end{equation}
+has full rank\cite{Chen2014}. To check the observability we created a small MATLAB script. We check if the following statement is true \lstinline{rank(obsv(A, C)) == length(A)}. When the system has no disturbances, $\mathbf{A}$ and $\mathbf{C}$ is reduced to 
+\begin{align*}
+    \mathbf{A_{none}} = 
+    \begin{bmatrix}
+        0 & 1\\
+        0 & -\frac{1}{T}
+    \end{bmatrix}
+    ,
+    \mathbf{C_{none}} =  
+    \begin{bmatrix}
+        1 & 0
+    \end{bmatrix}
+\end{align*}
+This gives us a obersvability matrix
+\begin{align}
+    \mathbf{\mathcal{O}_{none}} = 
+    \begin{bmatrix}
+        1 & 0\\
+        0 & 1
+    \end{bmatrix}
+\end{align}
+which has rank equal to the dimension of $\mathbf{A_{none}}$ and the system is thus observable.
+\subsection{C, Observability with current disturbance}
+With current disturbance, $\mathbf{A}$ and $\mathbf{C}$ is reduced to 
+\begin{align*}
+    \mathbf{A_c} = 
+    \begin{bmatrix}
+        0 & 1 & 0\\
+        0 & -\frac{1}{T} & -\frac{K}{T}\\
+        0 & 0 & 0
+    \end{bmatrix}
+    ,
+    \mathbf{C_c} =  
+    \begin{bmatrix}
+        1 & 0 & 0
+    \end{bmatrix}
+\end{align*}
+This gives us a obersvability matrix
+\begin{align}
+    \mathbf{\mathcal{O}_{c}} = 
+    \begin{bmatrix}
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & -\frac{1}{T} & -\frac{K}{T}
+    \end{bmatrix}
+\end{align}
+which has rank equal to the dimension of $\mathbf{A_{c}}$ and the system is thus observable.
+\subsection{D, Observability with wave disturbance}
+With wave disturbance, $\mathbf{A}$ and $\mathbf{C}$ is reduced to 
+\begin{align*}
+    \mathbf{A_w} = 
+    \begin{bmatrix}
+        0 & 1 & 0 & 0\\
+        -\omega_0^2 & -2\lambda\omega_0 & 0 & 0\\
+        0 & 0 & 0 & 1\\
+        0 & 0 & 0& -\frac{1}{T}
+    \end{bmatrix}
+    ,
+    \mathbf{C_w} =  
+    \begin{bmatrix}
+        0 & 1 & 1 & 0
+    \end{bmatrix}
+\end{align*}
+This gives us a obersvability matrix
+\begin{align}
+    \mathbf{\mathcal{O}_w} =
+    \begin{bmatrix}
+        0 & 1 & 1 & 0\\
+        -\omega_0^2 & -2\lambda\omega_0 & 0 & 1\\
+        2\lambda\omega_0^3 & (4\lambda^2-1)\omega_0^2 & 0 & -\frac{1}{T}\\
+        (4\lambda^2-1)\omega_0^4 & (4\lambda^2-1)2\lambda\omega_0^3 & 0 & \frac{1}{T^2}
+    \end{bmatrix}
+\end{align}
+which has rank equal to the dimension of $\mathbf{A_w}$ and the system is thus observable.
+\subsection{E, Observability with both disturbances}
+With current and wave disturbance we use $\mathbf{A}$ and $\mathbf{C}$ given in \cref{eq:Full_A} and \cref{eq:Full_C}. This gives us a observability matrix
+\begin{align}
+    \mathbf{\mathcal{O}} = 
+    \begin{bmatrix}
+        0 & 1 & 1 & 0 & 0\\
+        -\omega_0^2 & -2\lambda\omega_0 & 0 & 1 & 0\\
+        2\lambda\omega_0^3 & (4\lambda^2-1)\omega_0^2 & 0 & -\frac{1}{T} & -\frac{K}{T}\\
+        (4\lambda^2-1)\omega_0^4 & (4\lambda^2-1)2\lambda\omega_0^3 & 0 & \frac{1}{T^2} & \frac{K}{T^2}\\
+        (2\lambda^2-1)4\lambda\omega_0^5 & (4\lambda^4-12\lambda^2+1)\omega_0^4 & 0 & -\frac{1}{T^3} & -\frac{K}{T^3}
+    \end{bmatrix}
+\end{align}
+which has rank equal to the dimension of $\mathbf{A}$ and the system with both disturbances is thus observable.
+We can conclude that the system is observable no matter the weather conditions. Especially important is the observabillity when both disturbances are present because this means that from knowledge of the output of the system we are able to determine the states \cite{Chen2014}.This enable us to use an estimator, more specifically the Kalman filter, to estimate states which we don't directly measure.  

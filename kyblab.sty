@@ -7,13 +7,17 @@
 \usepackage{csquotes} % Needs to be loaded after inputenc.
 \usepackage{amsmath} % See: http://tex.stackexchange.com/questions/32100/what-does-each-ams-package-do
 \usepackage{amssymb} % See above.
-\usepackage[squaren]{SIunits} % Provides SI units like \meter. The squaren option is due to a conflict with amssymb.
+%\usepackage[squaren]{SIunits} % Provides SI units like \meter. The squaren option is due to a conflict with amssymb.
 \usepackage{graphicx} % Provides the \includegraphics command.
 \usepackage{booktabs} % Better tables. Provides \toprule, \midrule, \bottomrule.
 \usepackage{listings} % Provides source code listings.
 \usepackage{capt-of} % Captions outside floats
 \usepackage{todonotes} % Provides several handy TODO commands.
 \usepackage{tabstackengine}
+\usepackage{subfigure}
+\usepackage{chngcntr}
+\usepackage{siunitx}
+\usepackage{commath}
 \usepackage[
   backend=bibtex,
   style=numeric,
@@ -21,8 +25,8 @@
   doi=false]{biblatex} % http://tex.stackexchange.com/questions/25701/bibtex-vs-biber-and-biblatex-vs-natbib
 \usepackage{hyperref} % Provides clickable links. Always load last, but before cleveref.
 \usepackage{cleveref} % Provides the \Cref command, for cross-referencing of equations, sections, figures and tables. Always load last.
-\usepackage{subfigure}
-\usepackage{chngcntr}
+
+
 
 
 % ``listings'' package settings
